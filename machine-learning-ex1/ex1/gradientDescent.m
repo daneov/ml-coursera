@@ -22,22 +22,16 @@ for iter = 1:num_iters
 
     % Save the cost J in every iteration    
     J_history(iter) = computeCost(X, y, theta);
-    fprintf('J(theta): %d\n',J_history(iter));
-    % Almost like the cost function - duplication    
-    res = 0;
-    for i = 1:m
-        h_X = 0;
-        for j = 1:size(X,2)
-            h_X = h_X + X(i,j) * theta(j,1);
-        end
-
-        res = res + (h_X - y(i)) * X(i,j);
-    end
-
-    theta(1,1) = theta(1,1) - alpha * (1/(m)) * res;
-    theta(2,1) = theta(2,1) - alpha * (1/(m)) * res;
     
-
+    for i = 1:m
+        featureRow = X(i,:);
+        hX_minus_y = featureRow * theta - y(i);
+        
+        for j = 1:size(theta)
+            theta(j) = theta(j) - alpha*1/m*hX_minus_y*featureRow(j);
+        end
+        
+    end
 end
 
 end
